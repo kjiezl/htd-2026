@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Teacher's Day, Sir Ted!</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='14' width='52' height='36' rx='4' fill='%23fdfaf3' stroke='%238c6239' stroke-width='4'/%3E%3Cpath d='M6 16 L32 36 L58 16' fill='none' stroke='%238c6239' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='36' r='6' fill='%238b3434'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-base: #f7f1e5;
+            --bg-card: #fdfaf3;
+            --paper-border: #dccfb8;
+            --paper-edge: #ebdcc4;
+            --text-dark: #2c2520;
+            --text-muted: #6e6256;
+            --accent-warm: #8c6239;
+            --wax-red: #8b3434;
+            --ink-highlight: #6b4423;
+            --dot-color: rgba(140, 98, 57, 0.22);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            /* Small dotted grid pattern on top of subtle vignette */
+            background-image: 
+                radial-gradient(circle, var(--dot-color) 1.2px, transparent 1.2px),
+                radial-gradient(ellipse at center, rgba(253, 250, 243, 0.5) 0%, rgba(220, 205, 180, 0.75) 100%);
+            background-size: 18px 18px, 100% 100%;
+            background-position: 0 0, center center;
+            background-repeat: repeat, no-repeat;
+            background-attachment: fixed;
+            color: var(--text-dark);
+            font-family: 'Kalam', cursive, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 16px;
+            letter-spacing: 0.2px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* SVG Grain Texture Overlay */
+        .paper-grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            opacity: 0.22;
+            z-index: 10;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Front Cover View */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--paper-border);
+            border-radius: 6px;
+            padding: 56px 36px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 
+                0 2px 6px rgba(44, 37, 32, 0.04),
+                0 12px 24px -6px rgba(110, 98, 86, 0.08),
+                inset 0 0 22px rgba(140, 98, 57, 0.03);
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card.fade-out {
+            opacity: 0;
+            transform: translateY(-12px);
+            pointer-events: none;
+        }
+
+        /* Wax Seal Icon */
+        .seal-icon {
+            width: 68px;
+            height: 68px;
+            background-color: var(--wax-red);
+            border-radius: 50%;
+            margin: 0 auto 24px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fcf8f2;
+            font-size: 26px;
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.22), 0 3px 8px rgba(139, 52, 52, 0.25);
+        }
+
+        .card-title {
+            font-family: 'Kalam', cursive, sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 34px;
+            line-height: 1.35;
+        }
+
+        /* Open Me Button with Hover Animation */
+        .btn-open {
+            position: relative;
+            background-color: var(--accent-warm);
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 0.88rem;
+            letter-spacing: 2px;
+            padding: 14px 38px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(44, 37, 32, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, letter-spacing 0.3s ease;
+        }
+
+        /* Subtle light sheen sweep */
+        .btn-open::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 70%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: skewX(-25deg);
+            transition: left 0.6s ease;
+            pointer-events: none;
+        }
+
+        .btn-open:hover {
+            background-color: #79532e;
+            transform: translateY(-2px);
+            letter-spacing: 2.4px;
+            box-shadow: 0 6px 18px rgba(140, 98, 57, 0.28), 0 2px 4px rgba(44, 37, 32, 0.08);
+        }
+
+        .btn-open:hover::before {
+            left: 170%;
+        }
+
+        .btn-open:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(44, 37, 32, 0.1);
+        }
+
+        /* Letter View with Smooth Fade/Slide Animation */
+        .letter {
+            display: none;
+            opacity: 0;
+            background-color: var(--bg-card);
+            border: 1px solid var(--paper-border);
+            border-radius: 6px;
+            padding: 56px 44px;
+            width: 100%;
+            text-align: left;
+            box-shadow: 
+                0 2px 6px rgba(44, 37, 32, 0.04),
+                0 14px 28px -6px rgba(110, 98, 86, 0.09),
+                inset 0 0 25px rgba(140, 98, 57, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .letter.visible {
+            display: block;
+            animation: fadeInSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .letter-body {
+            font-size: 1.35rem;
+            font-weight: 400;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
+
+        .letter-body p {
+            margin-bottom: 22px;
+        }
+
+        .list-thankyou {
+            margin-top: 14px;
+            margin-bottom: 24px;
+            padding-left: 2px;
+        }
+
+        .list-thankyou p {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 32px;
+            line-height: 1.6;
+        }
+
+        .list-icon {
+            position: absolute;
+            left: 2px;
+            top: 6px;
+            width: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--accent-warm);
+            opacity: 0.65;
+        }
+
+        .list-icon.star-special {
+            color: #c9933e;
+            opacity: 0.95;
+            font-size: 1.05rem;
+        }
+
+        /* Subtle Corner Accents */
+        .corner-decor {
+            position: absolute;
+            font-size: 0.9rem;
+            color: var(--accent-warm);
+            opacity: 0.22;
+            pointer-events: none;
+            user-select: none;
+            line-height: 1;
+            z-index: 2;
+        }
+
+        .corner-decor.top-left {
+            top: 18px;
+            left: 20px;
+        }
+
+        .corner-decor.top-right {
+            top: 18px;
+            right: 20px;
+        }
+
+        .corner-decor.bottom-left {
+            bottom: 18px;
+            left: 20px;
+        }
+
+        .corner-decor.bottom-right {
+            bottom: 18px;
+            right: 20px;
+        }
+
+        /* Front Card Subtle Accent Bar */
+        .card-accent-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 22px;
+            color: var(--accent-warm);
+            opacity: 0.45;
+            font-size: 0.8rem;
+        }
+
+        .card-accent-bar .accent-line {
+            width: 38px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--paper-border));
+        }
+
+        .card-accent-bar .accent-line.rev {
+            background: linear-gradient(90deg, var(--paper-border), transparent);
+        }
+
+        .card-accent-bar .accent-star {
+            color: #bfa15f;
+            font-size: 0.72rem;
+        }
+
+        /* Letter Top Header Ornament */
+        .letter-header-decor {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 26px;
+            color: var(--accent-warm);
+            opacity: 0.45;
+            font-size: 0.82rem;
+            user-select: none;
+        }
+
+        .letter-header-decor .decor-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--paper-border), transparent);
+        }
+
+        .letter-header-decor .decor-star {
+            color: #bfa15f;
+            font-size: 0.75rem;
+        }
+
+        /* Faint Letter Watermark */
+        .letter-watermark {
+            position: absolute;
+            right: -25px;
+            bottom: 40px;
+            font-size: 15rem;
+            color: var(--accent-warm);
+            opacity: 0.028;
+            pointer-events: none;
+            user-select: none;
+            transform: rotate(-10deg);
+            z-index: 0;
+        }
+
+        /* Signature Divider */
+        .signature-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin: 32px 0 20px 0;
+            color: var(--accent-warm);
+            opacity: 0.4;
+            user-select: none;
+        }
+
+        .signature-divider .div-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--paper-border), transparent);
+        }
+
+        .signature-divider .div-star {
+            color: #bfa15f;
+            font-size: 0.72rem;
+        }
+
+        .highlight-text {
+            color: var(--ink-highlight);
+            font-weight: 700;
+        }
+
+        .letter-signature {
+            margin-top: 36px;
+            font-size: 1.5rem;
+            text-align: right;
+            line-height: 1.5;
+        }
+
+        .letter-footer {
+            margin-top: 48px;
+            text-align: center;
+        }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--text-muted);
+            font-family: 'Cinzel', serif;
+            font-size: 0.78rem;
+            letter-spacing: 1.2px;
+            border: 1px solid var(--paper-border);
+            padding: 9px 22px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px;
+            }
+            .card, .letter {
+                padding: 38px 22px;
+            }
+            .card-title {
+                font-size: 1.85rem;
+            }
+            .letter-body {
+                font-size: 1.18rem;
+                line-height: 1.62;
+            }
+            .letter-signature {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Grain Noise Filter Overlay -->
+    <svg class="paper-grain">
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
+    </svg>
+
+    <div class="container">
+        
+        <!-- COVER CARD VIEW -->
+        <div class="card" id="cardView">
+            <div class="corner-decor top-left"><i class="fa-solid fa-code"></i></div>
+            <div class="corner-decor top-right"><i class="fa-solid fa-star"></i></div>
+            <div class="corner-decor bottom-left"><i class="fa-solid fa-star"></i></div>
+            <div class="corner-decor bottom-right"><i class="fa-solid fa-code"></i></div>
+
+            <div class="seal-icon">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+            <h1 class="card-title">Happy Teacher's Day, Sir Ted!</h1>
+            <div class="card-accent-bar" aria-hidden="true">
+                <span class="accent-line"></span>
+                <span class="accent-star"><i class="fa-solid fa-star"></i></span>
+                <span class="accent-code"><i class="fa-solid fa-code"></i></span>
+                <span class="accent-star"><i class="fa-solid fa-star"></i></span>
+                <span class="accent-line rev"></span>
+            </div>
+            <button class="btn-open" onclick="showLetter()" type="button">
+                Open Me
+            </button>
+        </div>
+
+        <!-- INSIDE LETTER VIEW -->
+        <div class="letter" id="letterView">
+            <!-- Subtle Corner Decors -->
+            <div class="corner-decor top-left"><i class="fa-solid fa-code"></i></div>
+            <div class="corner-decor top-right"><i class="fa-solid fa-star"></i></div>
+            <div class="corner-decor bottom-left"><i class="fa-solid fa-star"></i></div>
+            <div class="corner-decor bottom-right"><i class="fa-solid fa-terminal"></i></div>
+
+            <!-- Faint Watermark Emblem -->
+            <div class="letter-watermark" aria-hidden="true">
+                <i class="fa-solid fa-laptop-code"></i>
+            </div>
+
+            <div class="letter-body">
+                <!-- Top Decorative Header Bar -->
+                <div class="letter-header-decor" aria-hidden="true">
+                    <span class="decor-line"></span>
+                    <span><i class="fa-solid fa-code"></i></span>
+                    <span class="decor-star"><i class="fa-solid fa-star"></i></span>
+                    <span><i class="fa-solid fa-terminal"></i></span>
+                    <span class="decor-line"></span>
+                </div>
+
+                <p>Hi Sir Ted,</p>
+
+                <p>
+                    Happy Teachers' Day, sir! I know you're no longer my teacher in the traditional sense but you will always be the greatest teacher I've ever had.
+                </p>
+
+                <p>
+                    I've been thinking about what I could possibly say to someone who has had such a huge impact on my life and I don't think I'll ever be able to put everything into words but I still want to try since this will be my last academic year. Here's my long message to you:
+                </p>
+
+                <p>
+                    Let's go back to the very beginning. You were my teacher during my first year of college when you taught us the programming courses. I remember the very first day you introduced yourself to us and even then, I had a feeling that you were going to be different. You told us that you would give more to the students who were truly passionate and hungry to learn or already had prior knowledge. You talked about giving special projects to those who wanted more than just making a plain calculator. I remember hearing that and thinking “I really, really want to be one of those students.” I wanted to prove that I genuinely wanted to learn. I wanted to grow. I wanted to see just how far I could go. And from that day onward, I kept trying to prove it to you over and over. Everytime I challenged myself, every project I poured my heart into, and everytime I tried to go beyond what was required - you noticed. You commended me.
+                </p>
+
+                <p>
+                    You encouraged me and challenged me to do even more. And I don't think you realize how much those little moments meant to me. Because today, as you know, I'm already working as a professional developer in an international industry and I reached that point while I was not yet even in my third year of college.
+                </p>
+
+                <p>
+                    When I look at where I am now, I can trace so much of it back to you, sir. All the challenges you gave me, the special projects you trusted me with, the standards you pushed me toward, and the encouragement you gave me when I was still figuring myself out. The way you made me believe that maybe I really could become good at this. You molded me. You helped me become the kind of person who doesn't want to settle for what is merely required. You taught me to keep learning, to keep improving, and to always wonder what else I could accomplish. You made me strive for heights that I didn't even know I could reach.
+                </p>
+
+                <p>
+                    And I know I'm not the only one. I've seen it in the students who came after us. I've seen it in the people who still respect you, look up to you, and come back to you to share their accomplishments. Former students who were once sitting in your classroom eventually came back to your office telling you about their jobs, projects, achievements, and milestones. And I think that's one of the greatest proofs of what kind of teacher you are. <span class="highlight-text">You gave students a reason to believe in themselves.</span> You gave us that push to step outside the boxes we had put ourselves in and reach for things that seemed impossibly far away.
+                </p>
+
+                <p>
+                    And, sir, I know what you always say. You always tell me that we are the ones who did it. That you only guided us. That the credit belongs to us because we were the ones who worked hard. And yes, we worked hard. But I wish you could see yourself through the eyes of your students for just a moment because sometimes, believing in yourself isn't enough. Sometimes you need someone else to look at you and say, “You can do more.” Someone who sees potential in you before you can see it yourself. Someone who gives you a challenge that makes you think, “Wait… maybe I actually can do this.” For so many of us, that person was you. You were one of the biggest pushes any of us could have asked for.
+                </p>
+
+                <p>
+                    And sir, I know you ask yourself, “Why are they thanking me? I barely did anything.” Or you wonder, “Why did they choose me when they had so many other opportunities?” Or you look at the students you've taught and think, “Why are they looking up to me when they're already more skilled and talented than I am?” Sir, I hope you know the answer. <span class="highlight-text">You were there when we needed someone to believe in us.</span> And that matters more than you realize.
+                </p>
+
+                <p>
+                    And sir, I also really appreciate the way you care for your students. You know when to be strict, especially when you see students taking advantage of your kindness (or coolness). And honestly, I respect you so much for that. You don't let being a kind and approachable teacher stop you from doing what you believe is right for your students. But at the same time, when someone is struggling, whether it's with school, life, or something much more personal, you make time. You listen. You don't make people feel like they're a burden and you genuinely care. And I know that because I've experienced it myself. Just two months ago, I was at one of the lowest points in my life again. And somehow, you noticed and still found the time to sit down with me, listen to everything I had been carrying, and help however you could. You didn't have to do that, sir. You were busy. You had countless responsibilities and requests from the school and yet you still made time. And that meant more to me than I think I'll ever be able to properly explain.
+                </p>
+
+                <p>
+                    I know I'm not the only student who has gone to you just because they needed someone to talk to. And I deeply appreciate how seriously you take the mental and personal well-being of your students. For someone like me, who has struggled for a long time, having a teacher who genuinely understands that students are human beings first means more than you know. And now, even though I'm already in fourth year and you're no longer my professor, life somehow gave me another chance to learn from you.
+                </p>
+
+                <p>
+                    You're now the head of this office where I'm doing my internship and even as our supervisor, you're still the same sir Ted (although more stressed). You're still looking out for us, still pushing us, still encouraging us, still making sure we're okay and well-fed. You keep telling us how grateful you are that we chose to intern under you when we could have chosen from so many other opportunities. But sir, you were the opportunity we wanted. Being able to learn from you again, work with you, and have someone like you looking out for us is something I will always be grateful for. I know you're incredibly busy now. I know there are days when the university asks more and more from you, and I know you probably have more on your plate than anyone sees or realizes. Yet somehow, you still try your best to make time for us. You also step up for us and that is something I will never take for granted.
+                </p>
+
+                <p>
+                    Sir, I know you probably don't see yourself the way your students see you. You might look at all of us and think that we're the ones who became successful through our own hard work. And you're partly right, we did work hard. But you were one of the people who taught us that we were capable of doing so in the first place. You were the person who kept pushing us when we didn't know how far we could go. You were the person who saw potential in us before we had the confidence to see it ourselves. And every student you've pushed, every person you've encouraged, every student who has come back to your office just to tell you about something they accomplished, sir—they are living proof of your impact. Maybe you don't realize it and maybe you'll never fully realize it, but you left something in every one of us. A little bit of your drive. Your standards. Your encouragement. Your belief that we could do more. And wherever we go from here, I know there will always be students who carry that with them, including me.
+                </p>
+
+                <p>So, sir Ted, thank you.</p>
+
+                <div class="list-thankyou">
+                    <p><i class="fa-regular fa-star list-icon"></i>Thank you for being the one who introduced me to programming.</p>
+                    <p><i class="fa-regular fa-star list-icon"></i>Thank you for giving me challenges when I wanted to be challenged.</p>
+                    <p><i class="fa-regular fa-star list-icon"></i>Thank you for recognizing my passion when I was still trying to prove myself.</p>
+                    <p><i class="fa-regular fa-star list-icon"></i>Thank you for believing in me.</p>
+                    <p><i class="fa-regular fa-star list-icon"></i>Thank you for pushing me further than I thought I could go.</p>
+                    <p><i class="fa-regular fa-star list-icon"></i>Thank you for listening when I needed someone.</p>
+                    <p><i class="fa-regular fa-star list-icon"></i>Thank you for caring even when you didn't have to.</p>
+                    <p><i class="fa-solid fa-star list-icon star-special"></i>And most importantly, thank you for making me believe that maybe I really could reach for the stars.</p>
+                </div>
+
+                <p>
+                    Because I did, and I will continue to do so. And so did so many of your other students. You might tell us that we were the ones who reached them. But I hope you never forget that <span class="highlight-text">you were one of the reasons we had the courage to try.</span>
+                </p>
+
+                <p>
+                    Happy Teachers' Day, sir Ted.
+                </p>
+
+                <p>
+                    I hope that one day, when you look at all the students you've taught and all the things we've accomplished, you finally understand what we have been trying to tell you. <span class="highlight-text">You mattered and we appreciate you more than you will ever know and you always will.</span>
+                </p>
+
+                <!-- Signature Divider with Star and Code Symbols -->
+                <div class="signature-divider" aria-hidden="true">
+                    <span class="div-line"></span>
+                    <i class="fa-solid fa-star div-star"></i>
+                    <i class="fa-solid fa-code"></i>
+                    <i class="fa-solid fa-star div-star"></i>
+                    <span class="div-line"></span>
+                </div>
+            </div>
+
+            <div class="letter-signature">
+                With deepest gratitude,<br>
+                <strong>Kwenn Jiezl Ong</strong>
+            </div>
+
+            <div class="letter-footer">
+                <button class="btn-reset" onclick="hideLetter()" type="button">
+                    Close
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showLetter() {
+            const card = document.getElementById('cardView');
+            const letter = document.getElementById('letterView');
+
+            card.classList.add('fade-out');
+
+            setTimeout(() => {
+                card.style.display = 'none';
+                letter.classList.add('visible');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 350);
+        }
+
+        function hideLetter() {
+            const card = document.getElementById('cardView');
+            const letter = document.getElementById('letterView');
+
+            letter.classList.remove('visible');
+            card.style.display = 'block';
+            
+            // Force reflow
+            void card.offsetWidth;
+            card.classList.remove('fade-out');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
